@@ -1,15 +1,15 @@
 class BooksController < ApplicationController
   protect_from_forgery
-  
+
   def index
     @book = Book.new
     @books=Book.all
 
   end
-  
+
 
   def create
-    flash[:notice] = "successfully" 
+    flash[:notice] = "successfully"
     @books=Book.all
     @book = Book.new(book_params)
     if @book.save
@@ -38,10 +38,13 @@ class BooksController < ApplicationController
   end
 
   def update
-    flash[:notice] = "Book was successfully updated." 
+    flash[:notice] = "Book was successfully updated."
     @book=Book.find(params[:id])
-    @book.update(book_params)
-    redirect_to book_path(@book.id)
+    if @book.update(book_params)
+      redirect_to book_path(@book)
+    else
+      render 'books/edit'
+    end
   end
 
   private
